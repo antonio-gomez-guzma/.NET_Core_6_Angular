@@ -36,5 +36,9 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.paginator._intl.itemsPerPageLabel = "Items por página"
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
 }
