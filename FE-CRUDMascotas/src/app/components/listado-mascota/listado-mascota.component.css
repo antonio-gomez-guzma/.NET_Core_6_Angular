@@ -27,3 +27,22 @@ table {
     font-size: 14px;
     width: 100%;
   }
+
+  .white-icon {
+    color: white;
+}
+
+.search{
+    cursor: pointer;
+}
+
+.edit{
+    cursor: pointer;
+    color: #1878b0;
+}
+
+.delete
+{
+    cursor: pointer;
+    color: #e15639;
+}
