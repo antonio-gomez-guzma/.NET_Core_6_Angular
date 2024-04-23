@@ -23,6 +23,7 @@ const listMascotas: Mascota[] = [
 export class ListadoMascotaComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['name', 'edad', 'raza', 'color', 'peso', 'acciones'];
   dataSource = new MatTableDataSource<Mascota>(listMascotas);
+  loading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -44,10 +45,15 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
 
   eliminarMascota()
   {
-    this._snackBar.open("La Mascota fue eliminada con exito", '', {
-      duration: 2000,
-      horizontalPosition: 'right'
-    });
+    this.loading = true
+    setTimeout(()=>{
+
+        this._snackBar.open("La Mascota fue eliminada con exito", '', {
+          duration: 2000,
+          horizontalPosition: 'right'
+        });
+        this.loading = false;
+    },3000);
   }
 
 }
