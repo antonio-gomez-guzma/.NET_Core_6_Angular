@@ -25,6 +25,7 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.paginator._intl.itemsPerPageLabel = "Items por página"
   }
 
 }
