@@ -3,17 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 import { Mascota } from 'src/app/interface/mascota';
+import { MascotaService } from 'src/app/services/mascota.service';
 
 
-const listMascotas: Mascota[] = [
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Kami', edad: 3.5, raza: 'Gata persa', color: 'Negro', peso: 3},
-  {nombre: 'Danco', edad: 6, raza: 'Pastor aleman', color: 'Castaño', peso: 20},
-  {nombre: 'Emilio', edad: 10, raza: 'Caniche', color: 'Blanco', peso: 2 },
-  {nombre: 'Pedro', edad: 5, raza: 'Mapache', color: 'Negro', peso: 10},
-  {nombre: 'Poli', edad: 8, raza: 'Camaleón', color: '???', peso: 0.3}
-];
 
 @Component({
   selector: 'app-listado-mascota',
@@ -22,21 +16,26 @@ const listMascotas: Mascota[] = [
 })
 export class ListadoMascotaComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['name', 'edad', 'raza', 'color', 'peso', 'acciones'];
-  dataSource = new MatTableDataSource<Mascota>(listMascotas);
+  dataSource = new MatTableDataSource<Mascota>();
   loading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(private _snackBar: MatSnackBar, 
+              private _mascotaService: MascotaService) { }
 
   ngOnInit(): void {
+    this.obtenerMascotas();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.paginator._intl.itemsPerPageLabel = "Items por página"
+    if(this.dataSource.data.length > 0)
+      {
+        this.paginator._intl.itemsPerPageLabel = "Items por página"
+      }
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -56,4 +55,18 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
     },3000);
   }
 
+  obtenerMascotas()
+  {
+    this.loading = true;
+    this._mascotaService.getMascotas().subscribe(data => 
+      {
+        this.loading = false;
+        this.dataSource.data = data;
+      }, error => 
+        {
+          this.loading = false;
+          alert("Oppss ocurrio un error");
+        }
+    )
+  }
 }
