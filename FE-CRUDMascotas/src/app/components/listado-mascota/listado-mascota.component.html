@@ -7,10 +7,13 @@
 
 <div class= "container">
 
-    <mat-form-field>
-        <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input autocomplete="off">
-      </mat-form-field>
+  <mat-form-field appearance="standard">
+    <mat-label style="color: #666;">
+      <mat-icon>filter_list</mat-icon>
+      Filtro
+    </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input autocomplete="off">
+  </mat-form-field>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"  matSort>
     

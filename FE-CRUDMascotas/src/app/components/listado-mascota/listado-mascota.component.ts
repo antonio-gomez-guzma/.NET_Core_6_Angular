@@ -45,7 +45,7 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
 
   eliminarMascota()
   {
-    this.loading = true
+    this.loading = true 
     setTimeout(()=>{
 
         this._snackBar.open("La Mascota fue eliminada con exito", '', {
