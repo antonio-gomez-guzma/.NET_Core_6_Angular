@@ -5,7 +5,7 @@
 
 <app-spinner *ngIf="loading"></app-spinner>
 
-<div class= "container">
+<div *ngIf="dataSource.data.length > 0" class= "container">
 
   <mat-form-field appearance="standard">
     <mat-label style="color: #666;">
