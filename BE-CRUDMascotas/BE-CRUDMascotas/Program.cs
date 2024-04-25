@@ -23,6 +23,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     
 });
 
+//Automapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 
 var app = builder.Build();
 
