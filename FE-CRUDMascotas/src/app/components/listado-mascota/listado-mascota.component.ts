@@ -42,17 +42,16 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  eliminarMascota()
+  eliminarMascota(id: number)
   {
     this.loading = true 
-    setTimeout(()=>{
 
-        this._snackBar.open("La Mascota fue eliminada con exito", '', {
-          duration: 2000,
-          horizontalPosition: 'right'
-        });
-        this.loading = false;
-    },3000);
+    this._mascotaService.deleteMascota(id).subscribe(() =>
+    {
+      this.mensajeExito();
+      this.loading = false;
+      this.obtenerMascotas();
+    })
   }
 
   obtenerMascotas()
@@ -68,5 +67,13 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
           alert("Oppss ocurrio un error");
         }
     )
+  }
+
+  mensajeExito()
+  {
+    this._snackBar.open("La Mascota fue eliminada con exito", '', {
+      duration: 2000,
+      horizontalPosition: 'right'
+    });
   }
 }
