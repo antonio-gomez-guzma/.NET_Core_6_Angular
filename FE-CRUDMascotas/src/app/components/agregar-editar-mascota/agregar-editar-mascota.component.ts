@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Mascota } from 'src/app/interface/mascota';
 import { MascotaService } from 'src/app/services/mascota.service';
 
@@ -13,7 +14,8 @@ export class AgregarEditarMascotaComponent implements OnInit {
   form: FormGroup;
 
   constructor(private fb:FormBuilder, 
-    private _mascotaService: MascotaService
+    private _mascotaService: MascotaService,
+    private _snackBar: MatSnackBar
   ) {
     this.loading = false;
     this.form = this.fb.group(
@@ -49,9 +51,17 @@ export class AgregarEditarMascotaComponent implements OnInit {
     //Enviamos objeto al back-end
     this._mascotaService.addMascota(mascota).subscribe(data => 
       {
-        console.log(data);
+        this.mensajeExito();
       }
     )
+  }
+
+  mensajeExito()
+  {
+    this._snackBar.open("La Mascota fue registrada con exito", '', {
+      duration: 2000,
+      horizontalPosition: 'right'
+    });
   }
 
 }
