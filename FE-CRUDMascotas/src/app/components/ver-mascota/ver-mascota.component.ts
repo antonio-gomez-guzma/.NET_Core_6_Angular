@@ -11,21 +11,24 @@ import { MascotaService } from 'src/app/services/mascota.service';
 })
 export class VerMascotaComponent implements OnInit {
 
-  id: number;
+  id!: number;
   mascota!: Mascota; 
   loading: boolean = false;
 
-  // mascota$!: Observable<Mascota> //Que la variable termine con $ significa que es un observable, es un convenio // PIPE ASYNC
+  mascota$!: Observable<Mascota> //Que la variable termine con $ significa que es un observable, es un convenio // PIPE ASYNC
 
   constructor(private _mascotaService: MascotaService,
     private aRoute: ActivatedRoute
   ) 
   {
-    this.id = +this.aRoute.snapshot.paramMap.get('id')!; // Con el + se transforma a int, la ! es para decir que puede ser nulo.
+     this.id = +this.aRoute.snapshot.paramMap.get('id')!; // Con el + se transforma a int, la ! es para decir que puede ser nulo.
   }
 
   ngOnInit(): void {
-    this.obtenerMascota()
+    // this.aRoute.params.subscribe(data => { //Para hacer esto hay que crear una subscripcion y destruirla despues (VER TUTORIAL)
+    //   this.id = data['id'];
+    // })
+    this.obtenerMascota() 
     //this.mascota$ = this._mascotaService.getMascota(this.id) // PIPE ASYNC
   }
 
