@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using BE_CRUDMascotas.DTO;
+using BE_CRUDMascotas.Repository;
 
 namespace BE_CRUDMascotas.Controllers
 {
@@ -12,14 +13,14 @@ namespace BE_CRUDMascotas.Controllers
     [ApiController]
     public class MascotaController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        
         private readonly IMapper _mapper;
+        private readonly IMascotaRepository _mascotaRepository;
 
-        public MascotaController(ApplicationDbContext context, IMapper mapper)
-        {
-            _context = context;
+        public MascotaController(IMascotaRepository mascotaRepository, IMapper mapper)
+        {          
             _mapper = mapper;
-           
+           _mascotaRepository = mascotaRepository;
         }
 
         [HttpGet]
@@ -27,10 +28,11 @@ namespace BE_CRUDMascotas.Controllers
         {
             try
             {
-                var listaMascotas = await _context.Mascotas.ToListAsync();
+                var listaMascotas = await _mascotaRepository.GetListMascotas(); // PATRON REPOSITORIO
 
-                var listaMascotasDTO = _mapper.Map<IEnumerable<MascotaDTO>>(listaMascotas);
-                return Ok(listaMascotasDTO);
+                var listaMascotasDTO = _mapper.Map<IEnumerable<MascotaDTO>>(listaMascotas); // MAPEAR DTO
+
+                return Ok(listaMascotasDTO); // DEVOLVIENDO DATOS
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -42,7 +44,7 @@ namespace BE_CRUDMascotas.Controllers
         {
             try
             {
-                var mascota = await _context.Mascotas.FindAsync(id);
+                var mascota = _mascotaRepository.GetMascotaById(id); //PATON REPOSITORIO
 
                 if (mascota == null)
                 {
@@ -63,13 +65,12 @@ namespace BE_CRUDMascotas.Controllers
         {
             try
             {
-                var mascota = await _context.Mascotas.FindAsync(id);
+                var mascota = await _mascotaRepository.GetMascotaById(id);
 
                 if(mascota == null)
                 {  return NotFound();}
 
-                _context.Mascotas.Remove(mascota);
-                await _context.SaveChangesAsync();
+               await _mascotaRepository.DeleteMascota(mascota);
 
                 return NoContent();
 
@@ -88,8 +89,7 @@ namespace BE_CRUDMascotas.Controllers
 
                 mascota.FechaCreacion = DateTime.Now;
 
-                _context.Add(mascota);
-                await _context.SaveChangesAsync();
+                mascota = await _mascotaRepository.addMascota(mascota);
 
                 var mascotaItemDto = _mapper.Map<MascotaDTO>(mascota);
 
@@ -112,20 +112,14 @@ namespace BE_CRUDMascotas.Controllers
                     return BadRequest();
                 }
 
-                var mascotaItem = await _context.Mascotas.FindAsync(id);
+                var mascotaItem = await _mascotaRepository.GetMascotaById(id);
 
                 if(mascotaItem == null)
                 {
                     return NotFound();
                 }
 
-                mascotaItem.Nombre = mascota.Nombre;
-                mascotaItem.Edad = mascota.Edad;
-                mascotaItem.Color = mascota.Color;
-                mascotaItem.Raza = mascota.Raza;
-                mascotaItem.Peso = mascota.Peso;
-
-                await _context.SaveChangesAsync();
+               await _mascotaRepository.UpdateMascota(mascota);
 
                 return NoContent(); 
 
