@@ -22,4 +22,9 @@ export class MascotaService {
   {
     return this.http.get<Mascota>(`${this.myAppUrl}${this.myApiUrl}${id}`);
   }
+
+  deleteMascota(id: number) : Observable<void>
+  {
+    return this.http.delete<void>(`${this.myAppUrl}${this.myApiUrl}${id}`);
+  }
 }
