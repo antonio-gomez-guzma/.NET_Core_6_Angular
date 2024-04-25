@@ -111,10 +111,9 @@ namespace BE_CRUDMascotas.Controllers
                 mascotaItem.Raza = mascota.Raza;
                 mascotaItem.Peso = mascota.Peso;
 
-                _context.Update(mascota);
                 await _context.SaveChangesAsync();
 
-                return NotFound(); 
+                return NoContent(); 
 
             }catch (Exception ex)
             {
