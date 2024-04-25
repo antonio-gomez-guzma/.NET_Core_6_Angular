@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Mascota } from 'src/app/interface/mascota';
 import { MascotaService } from 'src/app/services/mascota.service';
 
@@ -13,11 +13,14 @@ import { MascotaService } from 'src/app/services/mascota.service';
 export class AgregarEditarMascotaComponent implements OnInit {
   loading: boolean;
   form: FormGroup;
+  id: number;
+  Operacion: string = "Agregar";
 
   constructor(private fb:FormBuilder, 
     private _mascotaService: MascotaService,
     private _snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private aRoute: ActivatedRoute
   ) {
     this.loading = false;
     this.form = this.fb.group(
@@ -29,10 +32,16 @@ export class AgregarEditarMascotaComponent implements OnInit {
         peso: ['',Validators.required]
       }
     )
+    this.id = Number(this.aRoute.snapshot.paramMap.get('id'));
+    console.log(this.id);
    }
 
 
   ngOnInit(): void {
+    if(this.id != 0)
+      {
+        this.Operacion = "Editar"
+      }
   }
 
   agregarMascota()
