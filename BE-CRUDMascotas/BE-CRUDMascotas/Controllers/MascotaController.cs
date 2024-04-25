@@ -70,5 +70,22 @@ namespace BE_CRUDMascotas.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post(Mascota mascota)
+        {
+            try
+            {
+                mascota.FechaCreacion = DateTime.Now;
+
+                _context.Add(mascota);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("Get", new { id = mascota.Id }, mascota);
+
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
