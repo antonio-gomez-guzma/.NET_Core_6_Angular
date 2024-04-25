@@ -2,6 +2,10 @@
 
     <h1>Ver Mascota</h1>
 </div>
+<!-- <div *ngIf="mascota$ | async as mascota" class="container"> -->
+
+<app-spinner *ngIf="loading == true"></app-spinner>
+
 <div *ngIf="mascota != null" class="container">
 
     <mat-card class="card">
