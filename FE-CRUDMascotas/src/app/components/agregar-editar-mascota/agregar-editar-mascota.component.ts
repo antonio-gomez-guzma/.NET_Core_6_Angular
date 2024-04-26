@@ -44,28 +44,26 @@ export class AgregarEditarMascotaComponent implements OnInit {
       }
   }
 
-  obtenerMascota(id: number)
-  {
+  obtenerMascota(id: number) {
     this.loading = true;
-    this._mascotaService.getMascota(id).subscribe(data => 
-      {
-        this.form.setValue({
-          nombre: data.nombre,
-          raza: data.raza,
-          color: data.color,
-          peso: data.peso,
-          edad: data.edad
-        })
-        this.loading = false;
-      }
-    )
+    this._mascotaService.getMascota(id).subscribe(data => {
+      
+      this.form.setValue({
+        nombre: data.nombre,
+        raza: data.raza,
+        color: data.color,
+        edad: data.edad,
+        peso: data.peso
+      })
+      this.loading = false;
+    })
   }
 
   agregarEditarMascota()
   {
     //const nombre = this.form.get('nombre')?.value;
 
-    const nombre = this.form.value.nombre;
+    //const nombre = this.form.value.nombre;
 
     const mascota: Mascota = {
       nombre: this.form.value.nombre,
