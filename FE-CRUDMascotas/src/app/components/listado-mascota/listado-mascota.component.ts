@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +16,7 @@ import { MascotaService } from 'src/app/services/mascota.service';
   templateUrl: './listado-mascota.component.html',
   styleUrls: ['./listado-mascota.component.css']
 })
+
 export class ListadoMascotaComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['name', 'edad', 'raza', 'color', 'peso', 'acciones'];
   dataSource = new MatTableDataSource<Mascota>();
@@ -24,11 +27,13 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
 
 
   constructor(private _snackBar: MatSnackBar, 
-              private _mascotaService: MascotaService) { }
+              private _mascotaService: MascotaService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.obtenerMascotas();
   }
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -76,4 +81,37 @@ export class ListadoMascotaComponent implements OnInit, AfterViewInit {
       horizontalPosition: 'right'
     });
   }
+  mensajeNoExito()
+  {
+    this._snackBar.open("La Mascota no fue eliminada", '', {
+      duration: 2000,
+      horizontalPosition: 'right'
+    });
+  }
+
+
+  //Abre la ventana de confirmación 
+  openDialog(id:number) {
+    const dialogRef = this.dialog.open(Dialog);
+
+    dialogRef.afterClosed().subscribe(Borrar => {
+      if (Borrar) {
+        this.eliminarMascota(id);
+        this.mensajeExito();
+      }else{
+        this.mensajeNoExito()
+      }
+    });
+  }
 }
+
+
+//Componente de la ventana de confirmación
+@Component({
+  selector: 'Dialog-selector',
+  templateUrl: './dialog-borrar.html',
+  styleUrls: ['./listado-mascota.component.css'],
+  standalone: true,
+  imports: [MatButtonModule, MatDialogModule]
+})
+export class Dialog{}
