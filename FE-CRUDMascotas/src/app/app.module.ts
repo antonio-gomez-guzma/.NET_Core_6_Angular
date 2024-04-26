@@ -20,7 +20,7 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
     AgregarEditarMascotaComponent,
     ListadoMascotaComponent,
-    VerMascotaComponent
+    VerMascotaComponent,
   ],
   imports: [
     BrowserModule,
