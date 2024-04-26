@@ -44,7 +44,7 @@ namespace BE_CRUDMascotas.Controllers
         {
             try
             {
-                var mascota = _mascotaRepository.GetMascotaById(id); //PATON REPOSITORIO
+                var mascota = await _mascotaRepository.GetMascotaById(id); //PATON REPOSITORIO
 
                 if (mascota == null)
                 {
